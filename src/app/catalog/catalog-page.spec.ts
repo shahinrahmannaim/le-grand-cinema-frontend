@@ -1,3 +1,4 @@
+import { provideRouter } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
 import { Subject, of, throwError } from 'rxjs';
 import { CatalogPage } from './catalog-page';
@@ -19,7 +20,7 @@ describe('Catalogue', () => {
     api.screenings.mockReturnValue(of([]));
     TestBed.configureTestingModule({
       imports: [CatalogPage],
-      providers: [{ provide: CatalogApi, useValue: api }],
+      providers: [provideRouter([]), { provide: CatalogApi, useValue: api }],
     });
   });
   it('distinguishes failure from an empty programme and offers a retry', async () => {

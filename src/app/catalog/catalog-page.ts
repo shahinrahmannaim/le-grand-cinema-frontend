@@ -1,9 +1,11 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
+import { RouterLink } from '@angular/router';
 import { CatalogApi, Film, Screening } from '../core/catalog-api';
 @Component({
   selector: 'app-catalog-page',
+  imports: [RouterLink],
   templateUrl: './catalog-page.html',
   styleUrl: './catalog-page.scss',
 })

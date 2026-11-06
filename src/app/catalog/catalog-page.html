@@ -94,11 +94,12 @@
             <time [attr.datetime]="screening.startsAt">{{ time(screening.startsAt) }}</time
             ><span>{{ screening.roomName }}</span
             ><strong>{{ price(screening.priceCents) }}</strong
-            ><small>Heure de Paris</small>
+            ><small>Heure de Paris</small
+            ><a class="primary" [routerLink]="['/reserve', screening.id]">Choisir mes places →</a>
           </li>
         }
       </ul>
-      <p class="booking-note">La réservation en ligne sera disponible prochainement.</p>
+      <p class="booking-note">Choisissez jusqu’à 10 places. Paiement au cinéma.</p>
     }
   </section>
 }
