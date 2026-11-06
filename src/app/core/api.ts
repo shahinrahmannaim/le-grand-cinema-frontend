@@ -45,7 +45,11 @@ export class Api {
   get<T>(path: string, params: Record<string, string | number> = {}): Promise<T> {
     return firstValueFrom(this.http.get<T>(this.base + path, { params, withCredentials: true }));
   }
-  async write<T>(method: 'POST' | 'PUT' | 'PATCH', path: string, body: unknown): Promise<T> {
+  async write<T>(
+    method: 'POST' | 'PUT' | 'PATCH' | 'DELETE',
+    path: string,
+    body: unknown,
+  ): Promise<T> {
     const csrf = await this.get<{ token: string; headerName: string }>('/auth/csrf');
     return firstValueFrom(
       this.http.request<T>(method, this.base + path, {

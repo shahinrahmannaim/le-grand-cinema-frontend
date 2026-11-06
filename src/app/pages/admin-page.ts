@@ -113,6 +113,9 @@ interface ShowRow {
                 ><button class="text-button" [disabled]="busy()" (click)="publish(f)">
                   {{ f.published ? 'Dépublier' : 'Publier' }}
                 </button>
+                <button class="text-button" [disabled]="busy()" (click)="removeFilm(f)">
+                  Supprimer
+                </button>
               </td>
             </tr>
           }
@@ -282,6 +285,13 @@ export class AdminPage implements OnInit {
       );
       this.resetFilm();
     });
+  }
+  async removeFilm(f: FilmRow): Promise<void> {
+    if (window.confirm('Supprimer ce film ? Un film déjà programmé ne peut pas être supprimé.'))
+      await this.action(async () => {
+        await this.api.write('DELETE', '/admin/films/' + f.id, {});
+        if (this.filmId === f.id) this.resetFilm();
+      });
   }
   async publish(f: FilmRow): Promise<void> {
     await this.action(async () => {

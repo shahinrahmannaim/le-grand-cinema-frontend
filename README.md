@@ -1,61 +1,48 @@
 # Le Grand Cinéma — Frontend
 
-Angular 22, TypeScript, composants standalone, SCSS et tests Vitest.
-API : https://github.com/shahinrahmannaim/le-grand-cinema-backend
+Angular 22.2.6, TypeScript 6, Node 24 (minimum 24.15). Projet autonome, composants standalone, signaux, routes chargées à la demande, formulaires et API HTTP. Backend séparé : https://github.com/shahinrahmannaim/le-grand-cinema-backend.
 
-Ce premier incrément affiche les films et les séances depuis l'API. La réservation,
-l'authentification, le billet et les écrans de gestion restent à réaliser.
-Les films du profil demo sont fictifs. Les illustrations typographiques de remplacement
-ne sont pas de véritables affiches de films.
+## VS Code / démarrage local
 
-## Démarrer dans VS Code
-
-Utiliser Node 24 (au moins 24.15.0 pour Angular 22), puis :
+Ouvrir ce dossier dans VS Code. Avec le backend démarré sur le port 8080 :
 
 ```bash
 npm ci
 npm start
 ```
 
-Ouvrir `http://localhost:4200`. Démarrer l'API sur 8080 et PostgreSQL avec les instructions du
-dépôt backend. Le proxy local envoie `/api` vers `http://localhost:8080` ; aucun mot de passe
-de base de données ne doit se trouver dans ce dépôt. Un échec API affiche un message et un
-bouton Réessayer, pas une fausse liste vide.
+Ouvrir http://localhost:4200. Le proxy Angular relaie `/api` vers `http://localhost:8080`. Aucune URL de base de données ni aucun mot de passe dans ce projet. Le frontend lit `/config.json`, généré avant `start` et `build` ; la valeur par défaut `/api` est correcte en local et en production avec le proxy fourni.
 
-## Tests et construction
+Parcours : catalogue → film → date → séance → sièges → connexion ou inscription → confirmation → billet imprimable. Après une connexion, revenir à la séance si la sélection a été perdue pendant le changement de page. Les places ne sont bloquées qu’à la confirmation ; une sélection n’est pas un verrou. Maximum 10 places. Paiement au cinéma.
+
+Comptes de démonstration initialisés par le backend : `client@demo.cinema.test`, `staff@demo.cinema.test`, `admin@demo.cinema.test`. Utiliser la valeur de `DEMO_PASSWORD` choisie dans la configuration backend. Le menu affiche les fonctions autorisées ; le serveur contrôle chaque accès indépendamment.
+
+## Fonctions
+
+- Programme, dates en heure de Paris, état vide et relance après erreur.
+- Plan par rangée : libre, sélectionné et occupé distingués par symboles et libellés ; boutons utilisables au clavier.
+- Disponibilité SSE : rafraîchissement à la reconnexion et avertissement hors ligne.
+- Confirmation conservant la même clé et le même contenu après une réponse perdue ; conflit explicite si une place est prise.
+- Compte client, session HttpOnly côté serveur, jeton CSRF obtenu avant chaque modification.
+- Billet privé, version mobile et feuille de style d’impression (PDF via le navigateur).
+- Guichet, recherche paginée, occupation, comparaison de périodes et seuil d’alerte consultatif.
+- Administration des films, publication et programmation avec protection des séances réservées.
+
+## Vérification
 
 ```bash
-npm test -- --watch=false --coverage
 npm run format:check
+npm test -- --watch=false --coverage
+npm run test:proxy
 npm run build
 ```
 
-Les tests vérifient notamment la distinction erreur/état vide, le changement de date et
-l'annulation d'une réponse obsolète. Couverture : `coverage/cinema-frontend/index.html`.
-Le lockfile est versionné pour permettre `npm ci`. Le formatage Prettier fait partie de la CI ;
-il ne constitue pas à lui seul une analyse complète de qualité ou de sécurité.
+Les tests unitaires portent notamment sur la gestion des erreurs, les droits de navigation, le contrat CSRF, les conflits et la répétition d’une confirmation après coupure. Le rapport global inclut `src/app/**/*.ts`, y compris les fichiers non couverts. Rapports dans `coverage/`. La compilation de production produit `dist/cinema-frontend/browser`.
 
-## Configuration publique et déploiement
+Les tests DOM en jsdom ne prouvent pas le rendu réel à 360 px, l’impression ou le bon fonctionnement sur Safari. La recette navigateur doit être exécutée et conservée après installation / publication. Voir les limites et résultats dans [VALIDATION](docs/VALIDATION.md).
 
-Le prébuild génère `public/config.json` à partir de `API_BASE_URL`. La valeur par défaut `/api`
-fonctionne avec le proxy de développement. Pour un déploiement séparé :
+## Déploiement indépendant
 
-```bash
-API_BASE_URL=https://your-backend.onrender.com/api npm run build
-```
+Cloudflare Pages construit ce dépôt ; `functions/api/[[path]].js` relaie uniquement vers l’origine HTTPS fixe configurée dans `BACKEND_ORIGIN`. Les fichiers Java du backend ne sont pas présents sur le serveur frontend. Le proxy permet au navigateur d’utiliser une session de même origine tout en gardant deux déploiements. [Guide complet](docs/DEPLOYMENT.md).
 
-Render Static Site : commande `npm ci && npm run build`, dossier publié
-`dist/cinema-frontend/browser`. Définir `API_BASE_URL` dans les variables de build et une règle
-de réécriture `/*` vers `/index.html` pour le routage Angular. L'API doit autoriser exactement
-l'origine du frontend via `ALLOWED_ORIGINS`. Toute valeur frontend est publique.
-
-Avant les fonctionnalités privées, vérifier le transport des sessions sur les véritables
-domaines séparés. Ne pas contourner une restriction de cookie en désactivant CSRF.
-Le projet complet doit encore être déployé et vérifié ; cette configuration ne remplace pas
-une URL de démonstration fonctionnelle.
-
-## Branches
-
-`main` pour les livraisons validées, `develop` pour l'intégration, `feature/usXX-description`
-par histoire et `fix/description` pour les corrections. Chaque fonctionnalité doit avoir sa
-pull request vers `develop`, avec critères, résultats de tests et lien Trello.
+Les workflows GitHub vérifient le code à chaque push / PR. Leur présence ne constitue pas une exécution distante. [Flux Git](docs/GIT-WORKFLOW.md). Après la première installation, les changements se récupèrent avec Git, sans recopier les fichiers.
