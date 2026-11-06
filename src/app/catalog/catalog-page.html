@@ -38,12 +38,13 @@
     <div class="film-grid">
       @for (film of films(); track film.id; let i = $index) {
         <article class="film-card">
-          <div
+          <button
             class="poster"
             [class.poster-two]="i % 3 === 1"
             [class.poster-three]="i % 3 === 2"
-            role="img"
-            [attr.aria-label]="'Affiche de ' + film.title"
+            [attr.aria-label]="'Voir les séances de ' + film.title"
+            [attr.aria-pressed]="selected()?.id === film.id"
+            (click)="selectFilm(film)"
           >
             @if (film.posterUrl) {
               <img [src]="film.posterUrl" [alt]="'Affiche du film ' + film.title" loading="lazy" />
@@ -53,8 +54,8 @@
               ><span class="poster-title">{{ film.title }}</span
               ><span class="poster-footer">UNE NOUVELLE HISTOIRE VOUS ATTEND</span>
             }
-            <span class="poster-action">À l’affiche <span aria-hidden="true">↗</span></span>
-          </div>
+            <span class="poster-action">Voir les séances <span aria-hidden="true">↗</span></span>
+          </button>
           <p class="film-meta">{{ film.genre }} · {{ film.durationMinutes }} min</p>
           <h3>{{ film.title }}</h3>
           <p class="synopsis">{{ film.synopsis }}</p>
@@ -63,3 +64,41 @@
     </div>
   }
 </section>
+@if (selected(); as film) {
+  <section class="showtimes" aria-labelledby="screenings-title" aria-live="polite">
+    <div class="showtimes-heading">
+      <div>
+        <p class="eyebrow">CHOISISSEZ VOTRE SÉANCE</p>
+        <h2 id="screenings-title">{{ film.title }}</h2>
+      </div>
+      <label
+        >Jour de votre visite<input
+          type="date"
+          [value]="selectedDate()"
+          (change)="selectDate($event)"
+      /></label>
+    </div>
+    @if (screeningsLoading()) {
+      <p role="status">Recherche des séances…</p>
+    } @else if (screeningsError()) {
+      <div role="alert">
+        <p>Impossible de charger les séances.</p>
+        <button class="secondary" (click)="loadScreenings()">Réessayer</button>
+      </div>
+    } @else if (screenings().length === 0) {
+      <p role="status">Aucune séance disponible à cette date. Essayez un autre jour.</p>
+    } @else {
+      <ul class="screening-list">
+        @for (screening of screenings(); track screening.id) {
+          <li>
+            <time [attr.datetime]="screening.startsAt">{{ time(screening.startsAt) }}</time
+            ><span>{{ screening.roomName }}</span
+            ><strong>{{ price(screening.priceCents) }}</strong
+            ><small>Heure de Paris</small>
+          </li>
+        }
+      </ul>
+      <p class="booking-note">La réservation en ligne sera disponible prochainement.</p>
+    }
+  </section>
+}
