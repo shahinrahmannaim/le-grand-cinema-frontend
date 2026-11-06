@@ -18,5 +18,9 @@ const staff: CanActivateFn = async () => {
 export const routes: Routes = [
   { path: '', loadComponent: () => import('./catalog/catalog-page').then((m) => m.CatalogPage) },
   { path: 'login', loadComponent: () => import('./pages/login-page').then((m) => m.LoginPage) },
+  {
+    path: 'reserve/:id',
+    loadComponent: () => import('./pages/reservation-page').then((m) => m.ReservationPage),
+  },
   { path: '**', redirectTo: '' },
 ];

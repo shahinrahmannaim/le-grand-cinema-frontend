@@ -1,0 +1,76 @@
+.booking-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 40px;
+  margin-top: 40px;
+}
+.screen {
+  text-align: center;
+  border-top: 4px solid var(--gold);
+  padding: 20px;
+  letter-spacing: 0.4em;
+  color: var(--muted);
+  border-radius: 50%;
+}
+.legend {
+  font-size: 0.85rem;
+}
+.seat-map {
+  overflow: auto;
+  padding: 10px 8px 24px;
+}
+.seat-row {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  margin: 7px 0;
+  min-width: 450px;
+  justify-content: center;
+}
+.seat-row > span {
+  width: 30px;
+  font-size: 0.7rem;
+}
+.seat {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 8px 8px 3px 3px;
+  border: 1px solid var(--gold);
+  background: #203833;
+  color: var(--text);
+  font-size: 0.8rem;
+}
+.seat.chosen {
+  background: var(--gold);
+  color: var(--bg);
+}
+.seat.taken {
+  background: #252c2a;
+  color: #a8aaa4;
+  border-color: #626860;
+}
+.summary {
+  padding: 26px;
+  background: #192522;
+  border: 1px solid var(--line);
+  align-self: start;
+}
+.total {
+  font-size: 2rem;
+  color: var(--gold);
+}
+.summary .primary {
+  width: 100%;
+}
+@media (max-width: 850px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
+  .summary {
+    order: -1;
+  }
+  .seat-map {
+    margin: 0 -8px;
+  }
+}
