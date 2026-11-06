@@ -1,0 +1,65 @@
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <p class="eyebrow">VOTRE RENDEZ-VOUS AVEC LE GRAND ÉCRAN</p>
+    <h1 id="hero-title">Faites place aux<br /><em>belles histoires.</em></h1>
+    <p class="intro">
+      Un film, une salle, une émotion.<br />Découvrez le programme du Grand Cinéma.
+    </p>
+    <a class="primary-link" href="#programme"
+      >Explorer les films <span aria-hidden="true">↗</span></a
+    >
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="halo"></div>
+    <span class="big-g">G</span><span class="art-caption">LE CINÉMA SE VIT EN GRAND.</span>
+  </div>
+</section>
+<section id="programme" class="programme" aria-labelledby="programme-title">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">LE PROGRAMME</p>
+      <h2 id="programme-title">À l’affiche</h2>
+    </div>
+    <p>Des histoires pour tous les regards.</p>
+  </div>
+  @if (loading()) {
+    <p class="notice" role="status">Chargement du programme…</p>
+  } @else if (error()) {
+    <div class="notice" role="alert">
+      <h3>Le programme prend un instant.</h3>
+      <p>Le serveur est peut-être en cours de démarrage. Réessayez dans une minute.</p>
+      <button class="secondary" (click)="loadFilms()">Réessayer</button>
+    </div>
+  } @else if (films().length === 0) {
+    <p class="notice" role="status">
+      Aucun film n’est programmé pour le moment. Revenez bientôt découvrir nos prochaines séances.
+    </p>
+  } @else {
+    <div class="film-grid">
+      @for (film of films(); track film.id; let i = $index) {
+        <article class="film-card">
+          <div
+            class="poster"
+            [class.poster-two]="i % 3 === 1"
+            [class.poster-three]="i % 3 === 2"
+            role="img"
+            [attr.aria-label]="'Affiche de ' + film.title"
+          >
+            @if (film.posterUrl) {
+              <img [src]="film.posterUrl" [alt]="'Affiche du film ' + film.title" loading="lazy" />
+            } @else {
+              <span class="poster-art" aria-hidden="true"></span
+              ><span class="poster-kicker">LE GRAND CINÉMA PRÉSENTE</span
+              ><span class="poster-title">{{ film.title }}</span
+              ><span class="poster-footer">UNE NOUVELLE HISTOIRE VOUS ATTEND</span>
+            }
+            <span class="poster-action">À l’affiche <span aria-hidden="true">↗</span></span>
+          </div>
+          <p class="film-meta">{{ film.genre }} · {{ film.durationMinutes }} min</p>
+          <h3>{{ film.title }}</h3>
+          <p class="synopsis">{{ film.synopsis }}</p>
+        </article>
+      }
+    </div>
+  }
+</section>
