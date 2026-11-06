@@ -22,5 +22,15 @@ export const routes: Routes = [
     path: 'reserve/:id',
     loadComponent: () => import('./pages/reservation-page').then((m) => m.ReservationPage),
   },
+  {
+    path: 'tickets/:id',
+    canActivate: [signedIn],
+    loadComponent: () => import('./pages/tickets-page').then((m) => m.TicketsPage),
+  },
+  {
+    path: 'tickets',
+    canActivate: [signedIn],
+    loadComponent: () => import('./pages/tickets-page').then((m) => m.TicketsPage),
+  },
   { path: '**', redirectTo: '' },
 ];
