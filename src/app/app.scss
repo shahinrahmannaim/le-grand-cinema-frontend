@@ -90,3 +90,16 @@ footer small {
     margin: 48px 20px 0;
   }
 }
+
+.site-header {
+  gap: 20px;
+  flex-wrap: wrap;
+}
+nav {
+  flex-wrap: wrap;
+  gap: 18px;
+}
+nav .text-button {
+  margin: 0;
+  padding: 0;
+}
