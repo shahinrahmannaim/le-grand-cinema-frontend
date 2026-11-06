@@ -32,5 +32,10 @@ export const routes: Routes = [
     canActivate: [signedIn],
     loadComponent: () => import('./pages/tickets-page').then((m) => m.TicketsPage),
   },
+  {
+    path: 'staff',
+    canActivate: [staff],
+    loadComponent: () => import('./pages/staff-page').then((m) => m.StaffPage),
+  },
   { path: '**', redirectTo: '' },
 ];
