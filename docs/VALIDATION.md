@@ -1,22 +1,34 @@
 # Validation exécutée — 6 novembre 2026
 
+## Nouvelle vérification frontend — 18 novembre 2026
+
+Sur la branche complète `feature/us15-occupancy-alerts`, Node 24.22.3 :
+Prettier réussi, 3 tests du proxy réussis, 27 tests Angular réussis dans 8 fichiers,
+build de production réussi. Couverture TypeScript : 83,15 % des lignes
+(553 / 665) et 64,36 % des branches (224 / 348). Ces contrôles ne remplacent pas
+la recette dans un navigateur ni une validation du déploiement frontend.
+
+Le contrôle des branches distantes du dépôt frontend a retourné uniquement
+`main` au commit initial `9de3dd0`. Les branches locales sont conservées dans
+l'archive ; aucune pull request ou fusion distante frontend n'est revendiquée.
+
 ## Résultats locaux observés
 
-| Contrôle | Résultat |
-|---|---|
-| Maven `-Pdatabase-tests clean verify` | Build réussi |
-| JUnit unitaires | 6 tests réussis, 0 échec / erreur / ignoré |
-| Intégration PostgreSQL et HTTP | 23 tests réussis, 0 échec / erreur / ignoré |
-| Checkstyle | 0 violation des règles configurées |
-| Couverture JaCoCo globale des lignes | 92.1 % (478 couvertes / 519) |
-| Couverture JaCoCo des branches | 73.39 % |
-| Angular / Vitest | 27 tests réussis dans 8 fichiers |
-| Couverture frontend globale des lignes TypeScript | 83.15 % (553 / 665) |
-| Couverture frontend des branches | 64.36 % |
-| Proxy de déploiement (Node test) | 3 tests réussis |
-| Prettier | Contrôle réussi |
-| Build Angular production | Réussi ; routes chargées à la demande, budget initial respecté |
-| Contrat OpenAPI 3.0.3 | 26 opérations, validation de structure réussie |
+| Contrôle                                          | Résultat                                                       |
+| ------------------------------------------------- | -------------------------------------------------------------- |
+| Maven `-Pdatabase-tests clean verify`             | Build réussi                                                   |
+| JUnit unitaires                                   | 6 tests réussis, 0 échec / erreur / ignoré                     |
+| Intégration PostgreSQL et HTTP                    | 23 tests réussis, 0 échec / erreur / ignoré                    |
+| Checkstyle                                        | 0 violation des règles configurées                             |
+| Couverture JaCoCo globale des lignes              | 92.1 % (478 couvertes / 519)                                   |
+| Couverture JaCoCo des branches                    | 73.39 %                                                        |
+| Angular / Vitest                                  | 27 tests réussis dans 8 fichiers                               |
+| Couverture frontend globale des lignes TypeScript | 83.15 % (553 / 665)                                            |
+| Couverture frontend des branches                  | 64.36 %                                                        |
+| Proxy de déploiement (Node test)                  | 3 tests réussis                                                |
+| Prettier                                          | Contrôle réussi                                                |
+| Build Angular production                          | Réussi ; routes chargées à la demande, budget initial respecté |
+| Contrat OpenAPI 3.0.3                             | 26 opérations, validation de structure réussie                 |
 
 Les chiffres frontend incluent explicitement `src/app/**/*.ts` et les fichiers non couverts. Ils ne doivent pas être confondus avec une couverture de toutes les branches métier, du CSS ou de tous les navigateurs. JaCoCo couvre le code Java compilé et exercé par les deux suites. Les pourcentages ne sont pas une preuve d’absence de défaut.
 

@@ -4,6 +4,18 @@ Angular 22.2.6, TypeScript 6, Node 24 (minimum 24.15). Projet autonome, composan
 
 ## VS Code / démarrage local
 
+Archive vérifiée le 18 novembre 2026 : la version complète se trouve sur
+`feature/us15-occupancy-alerts`. Les branches `main` et `develop` restent au commit
+initial avant les pull requests à réaliser sur GitHub. Le dossier `.git` conserve
+les branches et les commits ; ouvrir directement le dossier extrait, sans recopier
+son contenu dans un autre clone.
+
+Le backend déployé est disponible à
+https://le-grand-cinema-backend-uqee.onrender.com. Pour Cloudflare Pages, définir
+`BACKEND_ORIGIN=https://le-grand-cinema-backend-uqee.onrender.com` côté serveur et
+conserver `API_BASE_URL=/api`. Le proxy local ci-dessous cible toujours le backend
+local ; aucune configuration de production n'est nécessaire pour ce parcours.
+
 Ouvrir ce dossier dans VS Code. Avec le backend démarré sur le port 8080 :
 
 ```bash
