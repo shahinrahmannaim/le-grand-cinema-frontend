@@ -8,6 +8,7 @@
     <a routerLink="/">À l’affiche</a>
     @if (auth.user()) {
       <a routerLink="/tickets">Mes billets</a>
+      <a routerLink="/profile">Mon profil</a>
       @if (auth.staff()) {
         <a routerLink="/staff">Pilotage / Guichet</a>
       }

@@ -28,6 +28,7 @@ describe('Navigation guards', () => {
     );
   }
   it('sends an anonymous visitor to login and preserves the local destination', async () => {
+    expect(await guard('profile')).not.toBe(true);
     const result = await guard('tickets');
     expect(TestBed.inject(Router).serializeUrl(result as never)).toContain(
       'next=%2Ftickets%2Fprivate',
@@ -36,6 +37,7 @@ describe('Navigation guards', () => {
   it('permits an authenticated client to view their tickets', async () => {
     auth.user.set({ role: 'CLIENT' });
     expect(await guard('tickets')).toBe(true);
+    expect(await guard('profile')).toBe(true);
   });
   it('requires staff for pilotage and admin for administration', async () => {
     auth.user.set({ role: 'CLIENT' });
