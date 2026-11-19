@@ -1,0 +1,92 @@
+{
+  "date": "2026-11-06",
+  "backend": {
+    "unit": {
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "postgresql_integration": {
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "jacoco": {
+      "INSTRUCTION": {
+        "covered": 2596,
+        "missed": 232,
+        "percent": 91.8
+      },
+      "BRANCH": {
+        "covered": 91,
+        "missed": 33,
+        "percent": 73.39
+      },
+      "LINE": {
+        "covered": 478,
+        "missed": 41,
+        "percent": 92.1
+      },
+      "COMPLEXITY": {
+        "covered": 160,
+        "missed": 43,
+        "percent": 78.82
+      },
+      "METHOD": {
+        "covered": 128,
+        "missed": 13,
+        "percent": 90.78
+      },
+      "CLASS": {
+        "covered": 35,
+        "missed": 0,
+        "percent": 100.0
+      }
+    },
+    "database": "PostgreSQL 17.6 native test instance",
+    "jdk": "Temurin 21.0.13+9"
+  },
+  "frontend": {
+    "vitest_tests": 27,
+    "coverage_scope": "src/app/**/*.ts (coverageInclude)",
+    "coverage": {
+      "statements": {
+        "percent": 79.88,
+        "covered": 838,
+        "total": 1049
+      },
+      "branches": {
+        "percent": 64.36,
+        "covered": 224,
+        "total": 348
+      },
+      "functions": {
+        "percent": 51.03,
+        "covered": 74,
+        "total": 145
+      },
+      "lines": {
+        "percent": 83.15,
+        "covered": 553,
+        "total": 665
+      }
+    },
+    "proxy_node_tests": 3,
+    "production_build": "passed",
+    "prettier": "passed"
+  },
+  "openapi": {
+    "version": "3.0.3",
+    "operations": 26,
+    "validation": "passed with openapi-spec-validator"
+  },
+  "not_executed": [
+    "native browser rendering and real 360px/print check",
+    "Docker image or Compose startup in this runtime",
+    "GitHub remote CI and pull requests",
+    "public cloud deployment and end-to-end hosted acceptance",
+    "k6 load test, security audit and restoration exercise"
+  ]
+}

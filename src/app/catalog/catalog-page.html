@@ -1,0 +1,105 @@
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <p class="eyebrow">VOTRE RENDEZ-VOUS AVEC LE GRAND ÉCRAN</p>
+    <h1 id="hero-title">Faites place aux<br /><em>belles histoires.</em></h1>
+    <p class="intro">
+      Un film, une salle, une émotion.<br />Découvrez le programme du Grand Cinéma.
+    </p>
+    <a class="primary-link" href="#programme"
+      >Explorer les films <span aria-hidden="true">↗</span></a
+    >
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="halo"></div>
+    <span class="big-g">G</span><span class="art-caption">LE CINÉMA SE VIT EN GRAND.</span>
+  </div>
+</section>
+<section id="programme" class="programme" aria-labelledby="programme-title">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">LE PROGRAMME</p>
+      <h2 id="programme-title">À l’affiche</h2>
+    </div>
+    <p>Des histoires pour tous les regards.</p>
+  </div>
+  @if (loading()) {
+    <p class="notice" role="status">Chargement du programme…</p>
+  } @else if (error()) {
+    <div class="notice" role="alert">
+      <h3>Le programme prend un instant.</h3>
+      <p>Le serveur est peut-être en cours de démarrage. Réessayez dans une minute.</p>
+      <button class="secondary" (click)="loadFilms()">Réessayer</button>
+    </div>
+  } @else if (films().length === 0) {
+    <p class="notice" role="status">
+      Aucun film n’est programmé pour le moment. Revenez bientôt découvrir nos prochaines séances.
+    </p>
+  } @else {
+    <div class="film-grid">
+      @for (film of films(); track film.id; let i = $index) {
+        <article class="film-card">
+          <button
+            class="poster"
+            [class.poster-two]="i % 3 === 1"
+            [class.poster-three]="i % 3 === 2"
+            [attr.aria-label]="'Voir les séances de ' + film.title"
+            [attr.aria-pressed]="selected()?.id === film.id"
+            (click)="selectFilm(film)"
+          >
+            @if (film.posterUrl) {
+              <img [src]="film.posterUrl" [alt]="'Affiche du film ' + film.title" loading="lazy" />
+            } @else {
+              <span class="poster-art" aria-hidden="true"></span
+              ><span class="poster-kicker">LE GRAND CINÉMA PRÉSENTE</span
+              ><span class="poster-title">{{ film.title }}</span
+              ><span class="poster-footer">UNE NOUVELLE HISTOIRE VOUS ATTEND</span>
+            }
+            <span class="poster-action">Voir les séances <span aria-hidden="true">↗</span></span>
+          </button>
+          <p class="film-meta">{{ film.genre }} · {{ film.durationMinutes }} min</p>
+          <h3>{{ film.title }}</h3>
+          <p class="synopsis">{{ film.synopsis }}</p>
+        </article>
+      }
+    </div>
+  }
+</section>
+@if (selected(); as film) {
+  <section class="showtimes" aria-labelledby="screenings-title" aria-live="polite">
+    <div class="showtimes-heading">
+      <div>
+        <p class="eyebrow">CHOISISSEZ VOTRE SÉANCE</p>
+        <h2 id="screenings-title">{{ film.title }}</h2>
+      </div>
+      <label
+        >Jour de votre visite<input
+          type="date"
+          [value]="selectedDate()"
+          (change)="selectDate($event)"
+      /></label>
+    </div>
+    @if (screeningsLoading()) {
+      <p role="status">Recherche des séances…</p>
+    } @else if (screeningsError()) {
+      <div role="alert">
+        <p>Impossible de charger les séances.</p>
+        <button class="secondary" (click)="loadScreenings()">Réessayer</button>
+      </div>
+    } @else if (screenings().length === 0) {
+      <p role="status">Aucune séance disponible à cette date. Essayez un autre jour.</p>
+    } @else {
+      <ul class="screening-list">
+        @for (screening of screenings(); track screening.id) {
+          <li>
+            <time [attr.datetime]="screening.startsAt">{{ time(screening.startsAt) }}</time
+            ><span>{{ screening.roomName }}</span
+            ><strong>{{ price(screening.priceCents) }}</strong
+            ><small>Heure de Paris</small
+            ><a class="primary" [routerLink]="['/reserve', screening.id]">Choisir mes places →</a>
+          </li>
+        }
+      </ul>
+      <p class="booking-note">Choisissez jusqu’à 10 places. Paiement au cinéma.</p>
+    }
+  </section>
+}

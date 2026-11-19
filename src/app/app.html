@@ -1,0 +1,32 @@
+<a class="skip-link" href="#main">Aller au contenu</a>
+<header class="site-header">
+  <a class="brand" routerLink="/" aria-label="Le Grand Cinéma, accueil"
+    ><span class="brand-icon" aria-hidden="true">G</span
+    ><span>LE GRAND<br /><strong>CINÉMA</strong></span></a
+  >
+  <nav aria-label="Navigation principale">
+    <a routerLink="/">À l’affiche</a>
+    @if (auth.user()) {
+      <a routerLink="/tickets">Mes billets</a>
+      <a routerLink="/profile">Mon profil</a>
+      @if (auth.staff()) {
+        <a routerLink="/staff">Pilotage / Guichet</a>
+      }
+      @if (auth.user()?.role === 'ADMIN') {
+        <a routerLink="/admin">Administration</a>
+      }
+      <button class="text-button" (click)="logout()">Déconnexion</button>
+    } @else {
+      <a routerLink="/login">Connexion</a>
+    }
+  </nav>
+</header>
+@if (error()) {
+  <p role="alert" class="page error">{{ error() }}</p>
+}
+<main id="main"><router-outlet /></main>
+<footer>
+  <span>LE GRAND CINÉMA</span>
+  <p>Le plaisir du grand écran, au cœur de votre ville.</p>
+  <small>Programme de démonstration fictif · Projet de formation · Paiement au cinéma</small>
+</footer>
