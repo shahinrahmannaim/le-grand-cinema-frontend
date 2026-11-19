@@ -1,0 +1,347 @@
+:host {
+  display: block;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 32px;
+}
+.hero {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 36px;
+  align-items: center;
+  padding: 66px 0 70px;
+}
+.eyebrow {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.17em;
+  color: var(--gold);
+  margin: 0 0 20px;
+}
+h1 {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.8rem, 5.4vw, 4.7rem);
+  line-height: 1.07;
+  letter-spacing: -0.04em;
+  margin: 0 0 24px;
+}
+h1 em {
+  color: var(--gold);
+  font-weight: 400;
+}
+.intro {
+  color: var(--muted);
+  font-size: 1.04rem;
+  line-height: 1.7;
+}
+.primary-link {
+  display: inline-flex;
+  gap: 32px;
+  align-items: center;
+  margin-top: 15px;
+  padding: 15px 20px;
+  background: var(--gold);
+  color: var(--bg);
+  text-decoration: none;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+.hero-art {
+  height: 345px;
+  background: linear-gradient(145deg, #1d3632, #13231f 60%, #223c2c);
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+.halo {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border: 1px solid #cbb89144;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 38px #cbb8910a,
+    0 0 0 76px #cbb89108;
+}
+.big-g {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 17rem;
+  line-height: 1;
+  color: #d7bd83;
+  position: relative;
+  transform: rotate(-10deg);
+}
+.art-caption {
+  position: absolute;
+  bottom: 39px;
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+}
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  border-top: 1px solid var(--line);
+  padding-top: 35px;
+}
+.section-heading .eyebrow {
+  margin-bottom: 10px;
+}
+h2 {
+  font-family: Georgia, serif;
+  font-size: 2.3rem;
+  font-weight: 400;
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+.section-heading > p {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.film-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+}
+.poster {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3/3.9;
+  border: 0;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, #6a3e32, #33272e 50%, #b2794e);
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+.poster-two {
+  background: linear-gradient(150deg, #819294, #304651 60%, #b9b8a3);
+}
+.poster-three {
+  background: linear-gradient(160deg, #34405f, #151e37 55%, #62719b);
+}
+.poster-art {
+  position: absolute;
+  width: 90%;
+  height: 70%;
+  border: 1px solid #ffffff44;
+  border-radius: 50%;
+  left: 30%;
+  top: 22%;
+  box-shadow:
+    0 0 0 28px #ffffff09,
+    0 0 0 56px #ffffff08;
+  transform: rotate(-25deg);
+}
+.poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+.poster-kicker {
+  position: absolute;
+  top: 24px;
+  left: 0;
+  right: 0;
+  font-size: 0.48rem;
+  letter-spacing: 0.22em;
+}
+.poster-title {
+  position: absolute;
+  top: 35%;
+  left: 20px;
+  right: 20px;
+  font-family: Georgia, serif;
+  font-size: clamp(1.9rem, 3vw, 3rem);
+  font-style: italic;
+  line-height: 1.05;
+  text-shadow: 0 2px 24px #0006;
+}
+.poster-footer {
+  position: absolute;
+  bottom: 69px;
+  left: 0;
+  right: 0;
+  font-size: 0.45rem;
+  letter-spacing: 0.15em;
+}
+.poster-action {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #0e1716c9;
+  font-size: 0.8rem;
+}
+.poster[aria-pressed='true'] {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+.film-meta {
+  font-size: 0.72rem;
+  color: var(--gold);
+  margin: 20px 0 9px;
+}
+h3 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: 0 0 10px;
+}
+.synopsis {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0;
+}
+.notice {
+  padding: 32px;
+  border: 1px solid var(--line);
+  line-height: 1.6;
+}
+.secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--gold);
+  padding: 10px 16px;
+  cursor: pointer;
+}
+.showtimes {
+  margin-top: 48px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  background: #15201e;
+}
+.showtimes-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: center;
+}
+.showtimes-heading h2 {
+  font-size: 1.9rem;
+}
+.showtimes-heading .eyebrow {
+  margin-bottom: 10px;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+input {
+  font: inherit;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid #66716a;
+  padding: 10px;
+  color-scheme: dark;
+}
+.screening-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 28px 0;
+}
+.screening-list li {
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--line);
+  padding: 18px 24px;
+  min-width: 150px;
+}
+.screening-list time {
+  font-size: 1.7rem;
+  color: var(--gold);
+}
+.screening-list span,
+.screening-list small {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.screening-list strong {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.booking-note {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+@media (max-width: 750px) {
+  :host {
+    padding: 0 20px;
+  }
+  .hero {
+    padding: 44px 0;
+    gap: 24px;
+  }
+  .hero-art {
+    height: 270px;
+  }
+  .big-g {
+    font-size: 13rem;
+  }
+  .film-grid {
+    gap: 18px;
+  }
+  .section-heading > p {
+    display: none;
+  }
+  .poster-title {
+    font-size: 1.7rem;
+  }
+  .showtimes-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+}
+@media (max-width: 520px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  .hero-art {
+    height: 220px;
+  }
+  .hero-copy h1 {
+    font-size: 3.4rem;
+  }
+  .film-grid {
+    grid-template-columns: 1fr;
+  }
+  .poster {
+    aspect-ratio: 3/3.4;
+  }
+  .poster-title {
+    font-size: 3rem;
+  }
+  .poster-kicker {
+    font-size: 0.65rem;
+  }
+  .poster-footer {
+    font-size: 0.6rem;
+  }
+  .showtimes {
+    padding: 20px;
+  }
+  .screening-list li {
+    min-width: 125px;
+    flex: 1;
+  }
+  .section-heading {
+    padding-top: 28px;
+  }
+}
