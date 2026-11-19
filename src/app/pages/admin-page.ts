@@ -35,6 +35,11 @@ interface ShowRow {
       La durée du film et le temps de remise en état sont pris en compte pour chaque créneau. Les
       séances réservées sont protégées.
     </p>
+    <p class="notice">
+      Pour apparaître à l’affiche, un film doit être publié et avoir au moins une séance future non
+      annulée. Le catalogue public n’est pas limité à trois films. Utilisez « Publier », puis «
+      Programmer » dans la liste ci-dessous.
+    </p>
     @if (error()) {
       <p role="alert" class="error">{{ error() }}</p>
     }
@@ -113,6 +118,14 @@ interface ShowRow {
                 ><button class="text-button" [disabled]="busy()" (click)="publish(f)">
                   {{ f.published ? 'Dépublier' : 'Publier' }}
                 </button>
+                <button
+                  type="button"
+                  class="text-button"
+                  [disabled]="busy()"
+                  (click)="programFilm(f)"
+                >
+                  Programmer
+                </button>
                 <button class="text-button" [disabled]="busy()" (click)="removeFilm(f)">
                   Supprimer
                 </button>
@@ -123,7 +136,9 @@ interface ShowRow {
       </table>
     </div>
     <div class="panel">
-      <h2>{{ showId ? 'Modifier la séance' : 'Programmer une séance' }}</h2>
+      <h2 id="screening-form" tabindex="-1">
+        {{ showId ? 'Modifier la séance' : 'Programmer une séance' }}
+      </h2>
       <form #showForm="ngForm" (ngSubmit)="saveShow()">
         <div class="form-grid">
           <label
@@ -309,6 +324,13 @@ export class AdminPage implements OnInit {
       localTime: new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16),
       priceCents: s.price_cents,
     };
+  }
+  programFilm(f: FilmRow): void {
+    this.resetShow();
+    this.show.filmId = f.id;
+    const heading = document.getElementById('screening-form');
+    heading?.scrollIntoView({ block: 'start' });
+    heading?.focus({ preventScroll: true });
   }
   resetShow(): void {
     this.showId = '';
