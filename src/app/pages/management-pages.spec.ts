@@ -87,6 +87,38 @@ describe('Management, tickets and login', () => {
     expect(page.password).toBe('');
     expect(navigate).toHaveBeenCalledWith('/tickets');
   });
+  it('starts a new screening for the selected film without modifying an existing screening', async () => {
+    const film = {
+      id: 'film-extra',
+      title: 'Autre film',
+      synopsis: 'Synopsis',
+      duration_minutes: 100,
+      genre: 'Aventure',
+      poster_url: null,
+      published: false,
+    };
+    api.get.mockImplementation((path: string) =>
+      Promise.resolve(path === '/admin/films' ? [film] : []),
+    );
+    const fixture = TestBed.createComponent(AdminPage);
+    await fixture.whenStable();
+    const heading = fixture.nativeElement.querySelector('#screening-form') as HTMLElement;
+    heading.scrollIntoView = vi.fn();
+    fixture.componentInstance.showId = 'existing-screening';
+    fixture.componentInstance.show.roomId = 'previous-room';
+    const button = Array.from(
+      fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>,
+    ).find((b) => b.textContent?.trim() === 'Programmer')!;
+    button.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(fixture.componentInstance.showId).toBe('');
+    expect(fixture.componentInstance.show.filmId).toBe(film.id);
+    expect(fixture.componentInstance.show.roomId).toBe('');
+    expect(fixture.nativeElement.querySelector('select[name="filmId"]').value).toBe(film.id);
+    expect(document.activeElement).toBe(heading);
+    expect(api.write).not.toHaveBeenCalled();
+  });
   it('submits screening price as integer cents and converts the local date to an instant', async () => {
     api.get.mockResolvedValue([]);
     const page = TestBed.createComponent(AdminPage).componentInstance;
