@@ -79,7 +79,8 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "coverageInclude": ["src/app/**/*.ts"]
+            "coverageInclude": ["src/app/**/*.ts"],
+            "coverageReporters": ["text", "text-summary", "html", "lcov", "json-summary"]
           }
         }
       }
