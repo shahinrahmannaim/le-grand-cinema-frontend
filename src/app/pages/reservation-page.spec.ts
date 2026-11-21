@@ -95,4 +95,39 @@ describe('Seat selection and reliable confirmation', () => {
     await old;
     expect(page.plan()?.title).toBe('Latest');
   });
+  it('submits seat IDs in sorted order without changing the selection order', async () => {
+    const secondSeat = {
+      id: 'alpha',
+      rowNumber: 1,
+      seatNumber: 3,
+      occupied: false,
+    };
+    const twoSeatPlan = structuredClone(plan);
+    twoSeatPlan.seats.push(secondSeat);
+    api.get.mockResolvedValue(twoSeatPlan);
+
+    const fixture = TestBed.createComponent(ReservationPage);
+    await fixture.whenStable();
+    const page = fixture.componentInstance;
+
+    page.toggle(twoSeatPlan.seats[0]);
+    page.toggle(secondSeat);
+    expect(page.selected()).toEqual(['free', 'alpha']);
+
+    api.write.mockResolvedValueOnce({ id: 'ticket' });
+    vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    await page.confirm();
+
+    expect(api.write).toHaveBeenCalledWith(
+      'POST',
+      '/reservations',
+      expect.objectContaining({
+        screeningId: 'show',
+        seatIds: ['alpha', 'free'],
+        idempotencyKey: expect.any(String),
+      }),
+    );
+    expect(page.selected()).toEqual(['free', 'alpha']);
+  });
 });
