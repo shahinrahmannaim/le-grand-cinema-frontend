@@ -1,9 +1,10 @@
 name: Frontend checks
 on:
   push:
-    branches: [main, develop, 'feature/**']
+    branches: [main, develop, 'feature/**', 'fix/**', 'docs/**']
   pull_request:
     branches: [main, develop]
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
@@ -11,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -19,9 +22,53 @@ jobs:
       - run: npm run format:check
       - run: npm run test:proxy
       - run: npm test -- --watch=false --coverage
+      - name: Proxy coverage (Node.js)
+        run: >-
+          node --test --experimental-test-coverage
+          --test-coverage-include='functions/**'
+          --test-reporter=spec --test-reporter=lcov
+          --test-reporter-destination=stdout
+          --test-reporter-destination=coverage/proxy-lcov.info
+          scripts/proxy.test.mjs
       - run: npm run build
+      - run: node scripts/check-production-styles.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: frontend-coverage
           path: coverage/
+
+      - name: Check SonarQube configuration and reports
+        if: >-
+          (((github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+          github.ref == 'refs/heads/main') ||
+          (github.event_name == 'pull_request' && github.base_ref == 'main' &&
+          github.event.pull_request.head.repo.full_name == github.repository))
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION }}
+          SONAR_PROJECT_KEY: ${{ vars.SONAR_PROJECT_KEY }}
+        run: |
+          : "${SONAR_TOKEN:?Set the SONAR_TOKEN repository secret}"
+          : "${SONAR_ORGANIZATION:?Set the SONAR_ORGANIZATION repository variable}"
+          : "${SONAR_PROJECT_KEY:?Set the SONAR_PROJECT_KEY repository variable}"
+          test -s coverage/cinema-frontend/lcov.info
+          test -s coverage/proxy-lcov.info
+      - name: SonarQube Cloud analysis and quality gate
+        if: >-
+          (((github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+          github.ref == 'refs/heads/main') ||
+          (github.event_name == 'pull_request' && github.base_ref == 'main' &&
+          github.event.pull_request.head.repo.full_name == github.repository))
+        uses: SonarSource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9 # v8.3.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION }}
+          SONAR_PROJECT_KEY: ${{ vars.SONAR_PROJECT_KEY }}
+        with:
+          args: >-
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
+            -Dsonar.qualitygate.wait=true
+            -Dsonar.qualitygate.timeout=300
