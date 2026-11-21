@@ -199,7 +199,7 @@ export class ReservationPage implements OnInit {
     this.pending.set(
       this.pending() ?? {
         screeningId: this.id,
-        seatIds: [...this.selected()].sort(),
+        seatIds: [...this.selected()].sort((a, b) => a.localeCompare(b, 'en')),
         idempotencyKey: crypto.randomUUID(),
       },
     );
